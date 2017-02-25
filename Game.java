@@ -34,7 +34,7 @@ public class Game {
         // Создадим игроков
         IGameStrategy[] players = new IGameStrategy[2];
         players[0] = new MaxValueGameStrategy();
-        players[1] = new IncorrectGameStrategy();
+        players[1] = new RandomValueGameStrategy();
 
         // Сгенерируем матрицу игры
         createRandomMatrix();
