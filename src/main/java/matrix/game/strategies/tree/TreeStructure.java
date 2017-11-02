@@ -34,6 +34,24 @@ public class TreeStructure {
     }
 
     class Node {
+        private final List<Node> horizontalChildren;
+        private final List<Node> verticalChildren;
 
+        private final int x;
+        private final int y;
+        private int value;
+
+        public Node(int x, int y, int value) {
+            horizontalChildren = new LinkedList<>();
+            verticalChildren = new LinkedList<>();
+            this.x = x;
+            this.y = y;
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return "(" + x + ":" + y + ") = " + value;
+        }
     }
 }
