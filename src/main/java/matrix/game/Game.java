@@ -3,6 +3,7 @@ package matrix.game;
 import matrix.game.strategies.IGameStrategy;
 import matrix.game.strategies.MaxValueGameStrategy;
 import matrix.game.strategies.RandomValueGameStrategy;
+import matrix.game.utils.Coordinate;
 
 import java.util.Random;
 import java.util.concurrent.*;

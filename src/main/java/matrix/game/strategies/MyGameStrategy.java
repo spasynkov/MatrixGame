@@ -1,6 +1,6 @@
 package matrix.game.strategies;
 
-import matrix.game.Coordinate;
+import matrix.game.utils.Coordinate;
 
 /**
  * Болванка для реализации

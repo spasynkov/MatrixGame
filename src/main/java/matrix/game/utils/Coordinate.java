@@ -1,4 +1,4 @@
-package matrix.game;
+package matrix.game.utils;
 
 /**
  * Просто целочисленные координаты элемента в матрице (начинаются с 0).

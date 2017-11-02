@@ -1,6 +1,6 @@
 package matrix.game.strategies;
 
-import matrix.game.Coordinate;
+import matrix.game.utils.Coordinate;
 
 /**
  * Пример реализации зацикливания для контроля прерывания поиска в основном цикле игры

@@ -1,6 +1,6 @@
 package matrix.game.strategies;
 
-import matrix.game.Coordinate;
+import matrix.game.utils.Coordinate;
 
 /**
  * Created by 886 on 13.02.2017.
