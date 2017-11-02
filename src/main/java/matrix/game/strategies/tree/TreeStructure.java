@@ -3,16 +3,15 @@ package matrix.game.strategies.tree;
 import matrix.game.utils.Coordinate;
 import matrix.game.utils.Direction;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class TreeStructure {
     private final TreeCache cache;
-    private final List<Node> leafs;
+    private final Map<Node, Integer> leafs;
 
-    public TreeStructure() {
+    TreeStructure() {
         cache = new TreeCache();
-        leafs = new LinkedList<>();
+        leafs = new HashMap<>();
     }
 
     void init(int[][] matrix) {
@@ -41,12 +40,26 @@ public class TreeStructure {
         private final int y;
         private int value;
 
-        public Node(int x, int y, int value) {
+        private Node(int x, int y, int value) {
             horizontalChildren = new LinkedList<>();
             verticalChildren = new LinkedList<>();
             this.x = x;
             this.y = y;
             this.value = value;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Node node = (Node) o;
+            return x == node.x &&
+                    y == node.y;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, y);
         }
 
         @Override
