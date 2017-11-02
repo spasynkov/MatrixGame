@@ -1,5 +1,9 @@
 package matrix.game;
 
+import matrix.game.strategies.IGameStrategy;
+import matrix.game.strategies.MaxValueGameStrategy;
+import matrix.game.strategies.RandomValueGameStrategy;
+
 import java.util.Random;
 import java.util.concurrent.*;
 
@@ -9,7 +13,7 @@ import java.util.concurrent.*;
 public class Game {
 
     // Размер матрицы
-    static final int MATRIX_SIZE = 10;
+    public static final int MATRIX_SIZE = 10;
 
     // Количество перестановок элементов матрицы (для генерации случайной матрицы)
     private static final int NUMBER_OF_SHAKING = 1000;
@@ -19,7 +23,7 @@ public class Game {
 
     // Требования выполнить следующий ход по вертикали или горизонтали для текущего игрока
     static final int DIRECTION_VERTICAL   = -1;
-    static final int DIRECTION_HORIZONTAL =  1;
+    public static final int DIRECTION_HORIZONTAL =  1;
 
     // Матрица состояния игры, разбитая отдельно на массив строк и колонок для удобства
     private static int[][] rows    = new int[MATRIX_SIZE][MATRIX_SIZE]; // первая координата - номер строки,  вторая - номер элемента в ней
@@ -58,11 +62,11 @@ public class Game {
         int nonZeroHorizontalElements = 0;
         int nonZeroVerticalElements = 0;
 
-        for (int i:rows[lastMove.y])
+        for (int i:rows[lastMove.getY()])
             if (i>0)
                 nonZeroHorizontalElements++;
 
-        for (int i:columns[lastMove.x])
+        for (int i:columns[lastMove.getX()])
             if (i>0)
                 nonZeroVerticalElements++;
 
@@ -126,7 +130,7 @@ public class Game {
             direct = " ход: горизонталь ";
 
         System.out.println("### Номер хода: " + cntTurn + ", игрок: " +player + numPlayer + ", ход: (" +
-                lastMove.x + "," + lastMove.y + ")=" + element + " Счет игрока: " + score + direct + " ###");
+                lastMove.getX() + "," + lastMove.getY() + ")=" + element + " Счет игрока: " + score + direct + " ###");
         for (int[] row:rows) {
             for (int num : row)
                 if (num != element)
@@ -221,26 +225,29 @@ public class Game {
                     // 1) стратегия его сгенерировала
             if     (newTurn != null &&
                     // 2) если он не выходит за границы матрицы игры
-                    newTurn.x < MATRIX_SIZE && newTurn.x>=0 && newTurn.y < MATRIX_SIZE && newTurn.y>=0 &&
+                    newTurn.getX() < MATRIX_SIZE
+                    && newTurn.getX()>=0
+                    && newTurn.getY() < MATRIX_SIZE
+                    && newTurn.getY()>=0 &&
                     // 3) если он не был сыгран ранее
-                    columns[newTurn.x][newTurn.y] > 0 &&
+                    columns[newTurn.getX()][newTurn.getY()] > 0 &&
                     // 4) если не было "мухлежа" - был выполнен в соответствие с направлением (по вертикали или горизонтали)
-                    (currentDirection==DIRECTION_HORIZONTAL && turn.y==newTurn.y ||
-                     currentDirection==DIRECTION_VERTICAL  && turn.x==newTurn.x)) {
+                    (currentDirection==DIRECTION_HORIZONTAL && turn.getY()==newTurn.getY() ||
+                     currentDirection==DIRECTION_VERTICAL  && turn.getX()==newTurn.getX())) {
                 // Сбрасываем счетчик некорректных ходов, так как текущий ход - корректен
                 incorrectTurn = 0;
 
                 turn = newTurn;
                 // Начисляем очки
-                int currentElement = columns[turn.x][turn.y];
+                int currentElement = columns[turn.getX()][turn.getY()];
                 scores[currentPlayer] += currentElement;
                 // отобразим ход
                 printTurn(rows, turn, currentTurn, players[currentPlayer], currentPlayer, currentElement,
                         scores[currentPlayer], currentDirection);
 
                 // Отмечаем что данный элемент использован
-                columns [turn.x][turn.y] = 0;
-                rows    [turn.y][turn.x] = 0;
+                columns [turn.getX()][turn.getY()] = 0;
+                rows    [turn.getY()][turn.getX()] = 0;
 
                 // смена направления хода
                 currentDirection = -currentDirection;

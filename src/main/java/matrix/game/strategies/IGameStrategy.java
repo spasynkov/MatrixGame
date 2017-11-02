@@ -1,4 +1,6 @@
-package matrix.game;
+package matrix.game.strategies;
+
+import matrix.game.Coordinate;
 
 /**
  * Created by 886 on 13.02.2017.

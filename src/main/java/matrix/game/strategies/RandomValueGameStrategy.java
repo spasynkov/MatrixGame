@@ -1,4 +1,7 @@
-package matrix.game;
+package matrix.game.strategies;
+
+import matrix.game.Coordinate;
+import matrix.game.Game;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,18 +21,18 @@ public class RandomValueGameStrategy implements IGameStrategy {
         // В зависимости от текущего хода (по горизонтали или вертикали), добавляем координаты возможных ходов
         if (direction == Game.DIRECTION_HORIZONTAL) {
             for (int x = 0; x < Game.MATRIX_SIZE; x++)
-                if (rows[lastMove.y][x] > 0)
-                    elements.add(new Coordinate(x, lastMove.y));
+                if (rows[lastMove.getY()][x] > 0)
+                    elements.add(new Coordinate(x, lastMove.getY()));
         } else {
             for (int y = 0; y < Game.MATRIX_SIZE; y++)
-                if (columns[lastMove.x][y] > 0)
-                    elements.add(new Coordinate(lastMove.x, y));
+                if (columns[lastMove.getX()][y] > 0)
+                    elements.add(new Coordinate(lastMove.getX(), y));
         }
 
         // Отдадим случайным образом один из возможных вариантов
         if (elements.size()>0) {
-            move.x = elements.get(random.nextInt(elements.size())).x;
-            move.y = elements.get(random.nextInt(elements.size())).y;
+            move.setX(elements.get(random.nextInt(elements.size())).getX());
+            move.setY(elements.get(random.nextInt(elements.size())).getY());
         }
     }
 
