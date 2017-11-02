@@ -1,8 +1,8 @@
 package matrix.game;
 
 import matrix.game.strategies.IGameStrategy;
-import matrix.game.strategies.MaxValueGameStrategy;
 import matrix.game.strategies.RandomValueGameStrategy;
+import matrix.game.strategies.tree.TreeStrategy;
 import matrix.game.utils.Coordinate;
 import matrix.game.utils.Direction;
 
@@ -37,7 +37,7 @@ public class Game {
     public static void main(String[] args) {
         // Создадим игроков
         IGameStrategy[] players = new IGameStrategy[2];
-        players[0] = new MaxValueGameStrategy();
+        players[0] = new TreeStrategy();//new MaxValueGameStrategy();
         players[1] = new RandomValueGameStrategy();
 
         // Сгенерируем матрицу игры
