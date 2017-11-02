@@ -2,6 +2,7 @@ package matrix.game.strategies;
 
 import matrix.game.utils.Coordinate;
 import matrix.game.Game;
+import matrix.game.utils.Direction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +14,13 @@ import java.util.Random;
 public class RandomValueGameStrategy implements IGameStrategy {
 
     @Override
-    public void getTurn(int[][] columns, int[][] rows, Coordinate lastMove, int direction, Coordinate move) {
+    public void getTurn(int[][] columns, int[][] rows, Coordinate lastMove, Direction direction, Coordinate move) {
         List<Coordinate> elements= new ArrayList<>();
         Random random = new Random();
         elements.clear();
 
         // В зависимости от текущего хода (по горизонтали или вертикали), добавляем координаты возможных ходов
-        if (direction == Game.DIRECTION_HORIZONTAL) {
+        if (direction == Direction.HORIZONTAL) {
             for (int x = 0; x < Game.MATRIX_SIZE; x++)
                 if (rows[lastMove.getY()][x] > 0)
                     elements.add(new Coordinate(x, lastMove.getY()));

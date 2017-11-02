@@ -4,6 +4,7 @@ import matrix.game.strategies.IGameStrategy;
 import matrix.game.strategies.MaxValueGameStrategy;
 import matrix.game.strategies.RandomValueGameStrategy;
 import matrix.game.utils.Coordinate;
+import matrix.game.utils.Direction;
 
 import java.util.Random;
 import java.util.concurrent.*;
@@ -21,10 +22,6 @@ public class Game {
 
     // Максимальное время, отведенное для каждого игрока
     private static final int MAX_SECONDS_FOR_RUN = 1;
-
-    // Требования выполнить следующий ход по вертикали или горизонтали для текущего игрока
-    static final int DIRECTION_VERTICAL   = -1;
-    public static final int DIRECTION_HORIZONTAL =  1;
 
     // Матрица состояния игры, разбитая отдельно на массив строк и колонок для удобства
     private static int[][] rows    = new int[MATRIX_SIZE][MATRIX_SIZE]; // первая координата - номер строки,  вторая - номер элемента в ней
@@ -58,7 +55,7 @@ public class Game {
      * @param direction- направление очередного хода (по вертикали или горизонтали)
      * @return true    - если очередной ход возможен, false - иначе
      */
-    static boolean isMoveExists(int[][] columns, int[][] rows, Coordinate lastMove, int direction) {
+    static boolean isMoveExists(int[][] columns, int[][] rows, Coordinate lastMove, Direction direction) {
 
         int nonZeroHorizontalElements = 0;
         int nonZeroVerticalElements = 0;
@@ -73,8 +70,8 @@ public class Game {
 
         // Если в строке предполагаемого хода все клетки, кроме текущей были выбраны до этого (выбранные клетки = 0) или
         // в колонке предполагаемого хода все клетки, кроме текущей были выбраны до этого (выбранные клетки = 0) - то больше ходов нет
-        return (direction == DIRECTION_VERTICAL && nonZeroVerticalElements > 0 ||
-                direction == DIRECTION_HORIZONTAL && nonZeroHorizontalElements > 0);
+        return (direction == Direction.VERTICAL && nonZeroVerticalElements > 0 ||
+                direction == Direction.HORIZONTAL && nonZeroHorizontalElements > 0);
     }
 
 
@@ -125,9 +122,9 @@ public class Game {
      * @param score     - общее количество очков игрока
      */
     static void printTurn(int[][] rows, Coordinate lastMove, int cntTurn,
-                          IGameStrategy player, int numPlayer, int element, int score, int direction) {
+                          IGameStrategy player, int numPlayer, int element, int score, Direction direction) {
         String direct = " ход: вертикаль ";
-        if (direction == DIRECTION_HORIZONTAL)
+        if (direction == Direction.HORIZONTAL)
             direct = " ход: горизонталь ";
 
         System.out.println("### Номер хода: " + cntTurn + ", игрок: " +player + numPlayer + ", ход: (" +
@@ -150,7 +147,7 @@ public class Game {
      */
     public static void runGame(IGameStrategy[] players) {
         // Стартовое направление
-        int currentDirection = DIRECTION_HORIZONTAL;
+        Direction currentDirection = Direction.HORIZONTAL;
 
         // Создадим счет (результаты) игроков
         int[] scores = new int[players.length];
@@ -188,7 +185,7 @@ public class Game {
                     System.arraycopy(columns[i], 0, columnsCopy[i], 0, MATRIX_SIZE);
 
                 int playerNum  = currentPlayer;
-                int directionStrat = currentDirection;
+                Direction directionStrat = currentDirection;
                 Coordinate lastTurn = turn;
                 Coordinate generateTurn  = new Coordinate(0,0);
 
@@ -233,8 +230,8 @@ public class Game {
                     // 3) если он не был сыгран ранее
                     columns[newTurn.getX()][newTurn.getY()] > 0 &&
                     // 4) если не было "мухлежа" - был выполнен в соответствие с направлением (по вертикали или горизонтали)
-                    (currentDirection==DIRECTION_HORIZONTAL && turn.getY()==newTurn.getY() ||
-                     currentDirection==DIRECTION_VERTICAL  && turn.getX()==newTurn.getX())) {
+                    (currentDirection==Direction.HORIZONTAL && turn.getY()==newTurn.getY() ||
+                     currentDirection==Direction.VERTICAL  && turn.getX()==newTurn.getX())) {
                 // Сбрасываем счетчик некорректных ходов, так как текущий ход - корректен
                 incorrectTurn = 0;
 
@@ -251,7 +248,9 @@ public class Game {
                 rows    [turn.getY()][turn.getX()] = 0;
 
                 // смена направления хода
-                currentDirection = -currentDirection;
+                currentDirection = (currentDirection == Direction.HORIZONTAL)
+                        ? Direction.VERTICAL
+                        : Direction.HORIZONTAL;
             } else { // Ход некорректный или пустой
                 incorrectTurn++;
                 System.out.println("Игрок " + (currentPlayer+1) + " сходил некорректно, ход переходит к следующему игроку");

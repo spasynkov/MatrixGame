@@ -2,6 +2,7 @@ package matrix.game.strategies;
 
 import matrix.game.utils.Coordinate;
 import matrix.game.Game;
+import matrix.game.utils.Direction;
 
 /**
  * Стратегия, основанная на поиске максимального значения в строке или колонке
@@ -9,11 +10,11 @@ import matrix.game.Game;
 public class MaxValueGameStrategy implements IGameStrategy {
 
     @Override
-    public void getTurn(int[][] columns, int[][] rows, Coordinate lastMove, int direction, Coordinate move) {
+    public void getTurn(int[][] columns, int[][] rows, Coordinate lastMove, Direction direction, Coordinate move) {
         int maxValue = 0;
         Coordinate result;
         // В зависимости от текущего хода (по горизонтали или вертикали), ищем максимум в строке/колонке и выдаем его за ход
-        if (direction == Game.DIRECTION_HORIZONTAL) {
+        if (direction == Direction.HORIZONTAL) {
             result = new Coordinate(0,lastMove.getY());
 
             for (int x = 0; x < Game.MATRIX_SIZE; x++)

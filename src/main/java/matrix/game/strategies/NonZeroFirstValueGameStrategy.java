@@ -2,17 +2,18 @@ package matrix.game.strategies;
 
 import matrix.game.utils.Coordinate;
 import matrix.game.Game;
+import matrix.game.utils.Direction;
 
 /**
  * Пример реализации стратегии поиска первого доступного элемента
  */
 public class NonZeroFirstValueGameStrategy implements IGameStrategy {
     @Override
-    public void getTurn(int[][] columns, int[][] rows, Coordinate lastMove, int direction, Coordinate move) {
+    public void getTurn(int[][] columns, int[][] rows, Coordinate lastMove, Direction direction, Coordinate move) {
         Coordinate result;
 
         // В зависимости от текущего хода (по горизонтали или вертикали), ищем первый доступный ход
-        if (direction == Game.DIRECTION_HORIZONTAL) {
+        if (direction == Direction.HORIZONTAL) {
             result = new Coordinate(0,lastMove.getY());
 
             System.out.println();
